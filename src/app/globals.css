@@ -1,1 +1,10 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+}
+
+html {
+  --default-transition-duration: 300ms;
+}
