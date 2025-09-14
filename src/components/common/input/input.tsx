@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 type Properties = {
@@ -10,6 +9,9 @@ type Properties = {
   placeholder?: string;
   rowsCount?: number;
   type?: 'email' | 'password' | 'text' | 'number';
+  showPassword?: boolean;
+  onTogglePassword?: () => void;
+  defaultValue?: string;
 };
 
 const Input = ({
@@ -21,9 +23,10 @@ const Input = ({
   placeholder = '',
   rowsCount,
   type = 'text',
+  showPassword,
+  onTogglePassword,
+  defaultValue,
 }: Properties) => {
-  const [showPassword, setShowPassword] = useState(false);
-
   const hasError = errors ? !!errors.length : false;
   const isTextArea = Boolean(rowsCount);
   const isPassword = type === 'password';
@@ -42,6 +45,7 @@ const Input = ({
             name={name}
             placeholder={placeholder}
             rows={rowsCount}
+            defaultValue={defaultValue}
           />
         ) : (
           <>
@@ -49,14 +53,15 @@ const Input = ({
               autoComplete={autoComplete}
               name={name}
               placeholder={placeholder}
-              type={isPassword && showPassword ? 'text' : type}
+              type={isPassword ? (showPassword ? 'text' : 'password') : type}
+              defaultValue={defaultValue}
               className='w-full py-2.5 px-4 pr-10 text-base/8 font-normal border rounded-md bg-neutral-800 border-neutral-700
                 focus:outline-none focus:border-violet-500 hover:border-violet-700 transition-all'
             />
-            {isPassword && (
+            {isPassword && onTogglePassword && (
               <button
                 type='button'
-                onClick={() => setShowPassword((prev) => !prev)}
+                onClick={onTogglePassword}
                 className='absolute right-3 text-neutral-400 hover:text-white transition-colors'
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
