@@ -2,28 +2,28 @@
 
 import { prisma } from '@/libs/db/db';
 import { encryption } from '@/libs/encryption/encryption';
-import { userSignUpSchema } from '@/libs/common/auth/schemas';
+import { userSignInSchema } from '@/libs/common/auth/schemas';
 import { token } from '@/libs/token/token';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export type SignUpFormState = {
+export type SignInFormState = {
   errors: {
-    name?: string[];
     email?: string[];
     password?: string[];
     _form?: string[];
   };
   values?: { [key: string]: string };
+  token?: string;
 };
 
-export const signUp = async (
-  formState: SignUpFormState,
+export const signIn = async (
+  formState: SignInFormState,
   formData: FormData
-): Promise<SignUpFormState> => {
+): Promise<SignInFormState> => {
   const values = Object.fromEntries(formData) as Record<string, string>;
 
-  const parsed = userSignUpSchema.safeParse(values);
+  const parsed = userSignInSchema.safeParse(values);
 
   if (!parsed.success) {
     return {
@@ -33,12 +33,19 @@ export const signUp = async (
   }
 
   try {
-    const user = await prisma.user.create({
-      data: {
-        ...parsed.data,
-        password: await encryption.encrypt(parsed.data.password),
-      },
+    const user = await prisma.user.findUnique({
+      where: { email: parsed.data.email },
     });
+
+    if (
+      !user ||
+      !(await encryption.compare(parsed.data.password, user.password))
+    ) {
+      return {
+        errors: { _form: ['There is no user with these credentials.'] },
+        values,
+      };
+    }
 
     const userToken = await token.createToken({ id: user.id });
 
@@ -51,13 +58,8 @@ export const signUp = async (
       path: '/',
       maxAge: 60 * 60 * 24,
     });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err: unknown) {
-    if ((err as { code: string }).code === 'P2002') {
-      return {
-        errors: { _form: ['User with this email already exists.'] },
-        values,
-      };
-    }
     return {
       errors: { _form: ['Something went wrong. Please try again.'] },
       values,
