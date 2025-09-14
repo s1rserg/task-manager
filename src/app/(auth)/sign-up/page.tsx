@@ -3,6 +3,7 @@
 import { signUp } from '@/actions/auth/sign-up';
 import { Button } from '@/components/common/button/button';
 import { Input } from '@/components/common/input/input';
+import { AppRoute } from '@/libs/common/app/app';
 import { notifyError } from '@/libs/notification/notification';
 import Link from 'next/link';
 import { useActionState, useState } from 'react';
@@ -33,7 +34,7 @@ export default function SignUpPage() {
         Have an account?{' '}
         <Link
           className='text-violet-500 hover:text-violet-700 transition-all'
-          href='/sign-in'
+          href={AppRoute.SIGN_IN}
         >
           Log in
         </Link>

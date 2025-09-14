@@ -2,10 +2,11 @@
 
 import { prisma } from '@/libs/db/db';
 import { encryption } from '@/libs/encryption/encryption';
-import { userSignInSchema } from '@/libs/common/auth/schemas';
+import { userSignInSchema } from '@/libs/types/auth/schemas';
 import { token } from '@/libs/token/token';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { AppRoute } from '@/libs/common/app/app';
 
 export type SignInFormState = {
   errors: {
@@ -66,5 +67,5 @@ export const signIn = async (
     };
   }
 
-  redirect('/dashboard');
+  redirect(AppRoute.DASHBOARD);
 };

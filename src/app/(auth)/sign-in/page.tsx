@@ -3,6 +3,7 @@
 import { signIn } from '@/actions/auth/sign-in';
 import { Button } from '@/components/common/button/button';
 import { Input } from '@/components/common/input/input';
+import { AppRoute } from '@/libs/common/app/app';
 import { notifyError } from '@/libs/notification/notification';
 import Link from 'next/link';
 import { useActionState, useEffect, useState } from 'react';
@@ -32,7 +33,7 @@ export default function SignUpPage() {
         Don&apos;t have an account?{' '}
         <Link
           className='text-violet-500 hover:text-violet-700 transition-all'
-          href='/sign-up'
+          href={AppRoute.SIGN_UP}
         >
           Create new
         </Link>
@@ -60,7 +61,7 @@ export default function SignUpPage() {
         Forgot password?{' '}
         <Link
           className='text-violet-500 hover:text-violet-700 transition-all'
-          href='/sign-in'
+          href={AppRoute.SIGN_IN}
         >
           Reset
         </Link>
