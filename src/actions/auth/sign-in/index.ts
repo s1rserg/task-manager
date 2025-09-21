@@ -15,7 +15,6 @@ export type SignInFormState = {
     _form?: string[];
   };
   values?: { [key: string]: string };
-  token?: string;
 };
 
 export const signIn = async (
