@@ -67,7 +67,7 @@ export default function SignUpPage() {
         </Link>
       </p>
 
-      <Button label='Sign Up' />
+      <Button label='Sign In' />
     </form>
   );
 }

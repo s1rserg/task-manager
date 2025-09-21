@@ -1,17 +1,17 @@
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 
-type JWTPayload = {
+type AuthTokenPayload = {
   id: string;
 };
 
-type userIdPayload = {
+type GetUserIdResult = {
   success: boolean;
   userId?: string;
   error?: string;
 };
 
-export async function getUserId(): Promise<userIdPayload> {
+export async function getUserId(): Promise<GetUserIdResult> {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
 
@@ -23,12 +23,17 @@ export async function getUserId(): Promise<userIdPayload> {
   }
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET!) as JWTPayload;
+    const payload = jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as AuthTokenPayload;
     return {
       success: true,
       userId: payload.id,
     };
   } catch {
+    cookieStore.delete('token');
+
     return {
       success: false,
       error: 'Invalid token.',

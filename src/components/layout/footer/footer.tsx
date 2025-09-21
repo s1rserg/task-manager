@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import logoSrc from '../../../public/logo.svg';
 import Image from 'next/image';
+import { AppRoute } from '@/libs/common/app/app';
 
 const Footer = () => {
   return (
     <footer className='w-full border-t border-violet-400'>
       <div className='mx-auto flex flex-col sm:flex-row items-center justify-between px-3 py-4 gap-4'>
-        <Link href='#' className='flex items-center text-violet-500'>
+        <Link
+          href={AppRoute.ROOT}
+          className='flex items-center text-violet-500'
+        >
           <Image src={logoSrc} alt='Logo' width={240} />
         </Link>
 
