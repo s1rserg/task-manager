@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { FaCross } from 'react-icons/fa';
 import { useHandleClickOutside } from '@/libs/hooks/use-handle-click-outside/use-handle-click-outside.hook';
+import { FaXmark } from 'react-icons/fa6';
 
 type Properties = {
   children: React.ReactNode;
@@ -38,13 +38,13 @@ const Modal = ({ children, isOpened, onClose, title }: Properties) => {
       >
         <div className='absolute top-4 right-4 z-10'>
           <button type='button' onClick={onClose} className='text-gray-500'>
-            <FaCross />
+            <FaXmark />
           </button>
         </div>
 
         <div className='flex flex-col gap-2.5'>
           <div className='flex flex-col gap-6 sm:gap-4 xs:gap-3'>
-            <h3 className='text-lg font-semibold text-gray-900 sm:text-base xs:text-sm'>
+            <h3 className='text-2xl font-semibold text-white sm:text-lg xs:text-sm'>
               {title}
             </h3>
             {children}
